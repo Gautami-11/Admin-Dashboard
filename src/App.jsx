@@ -1,41 +1,81 @@
- import Calendar from "./pages/Calendar";
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "../src/components/layouts/Sidebar";
-import Home from "../src/pages/Home";
 import Navbar from "../src/components/layouts/Navbar";
-import Kanban from "./pages/Kanban"
+import Home from "../src/pages/Home";
+import Calendar from "./pages/Calendar";
+import Kanban from "./pages/Kanban";
 import Tables from "./pages/Tables";
-import { useState } from "react";
-import { BrowserRouter ,Routes ,Route} from "react-router-dom";
-import './App.css'
-
-
+import PieChart from "./pages/PieChart";
+import BarCharts from "./pages/BarCharts";
+import LineCharts from "./pages/LineCharts";
+import Scatterplot from "./pages/Scatterplot";
+import { useEffect } from "react";
+import "./index.css";
+import './App.css';
+import { ThemeProvider } from "./components/Theme";
 
 function App() {
-  const [showSidebar, setShowSidebar] = useState(true);
-  
-console.log("app jsx loading")
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  const sidebarWidth = isCollapsed ? "4rem" : "15rem";
+  const navbarHeight = "4rem"; 
+
+  const [themeMode, setThemeMode] = useState("light")
+
+  const lightTheme = () => {
+    setThemeMode("light")
+  }
+
+  const darkTheme = () => {
+    setThemeMode("dark")
+  }
+
+
+  useEffect(() => {
+     document.documentElement.classList.remove("light", "dark");
+  document.documentElement.classList.add(themeMode);
+  }, [themeMode])
 
 
   return (
+    <ThemeProvider value={{ themeMode, lightTheme, darkTheme }}>
     <BrowserRouter>
-      <div className="flex min-h-screen text">
+      
+    
+        <Navbar onToggleSidebar={toggleSidebar} />
+        <Sidebar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} navbarHeight={navbarHeight} />
+        <div className=" min-h-screen bg-white dark:bg-gray-900 dark:text-gray-200 ">
 
-        {/* Toggle Sidebar */}
-        {showSidebar && <Sidebar />}
+        
 
-        <div className="flex-1 flex flex-col">
-          <Navbar onToggleSidebar={() => setShowSidebar(!showSidebar)} />
-          <div className="p-4 overflow-y-auto">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/kanban" element={<Kanban />} />
-              <Route path="/tables" element={<Tables />} />
-            </Routes>
-          </div>
-        </div>
+  
+        <main
+          className="p-4"
+          style={{
+            marginTop: navbarHeight,
+            marginLeft: sidebarWidth,
+            transition: "all 0.3s ease",
+          }}
+        >
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/kanban" element={<Kanban />} />
+            <Route path="/tables" element={<Tables />} />
+            <Route path="/piecharts" element={<PieChart />} />
+            <Route path="/lineCharts" element={<LineCharts />} />
+            <Route path="/barCharts" element={<BarCharts />} />
+            <Route path="/scatterCharts" element={<Scatterplot />} />
+          </Routes>
+        </main>
       </div>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

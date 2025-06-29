@@ -1,34 +1,62 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
+import React, { useState, useEffect, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTruckFast } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import ThemeBtn from "../ThemeBtn";
+import UserCard from '../UserCard';
+
 
 
 const Navbar = ({ onToggleSidebar }) => {
-  return (
-  <nav className="  ml-3 p-2 text-3xl  mt-2 mr-2.5 mb-12 ">
-    <div className=' mb-10'>
+const [isOpen, setIsOpen] = useState(false);
+  const userCardRef = useRef();
 
-      {/* Floating Button with Tooltip */}
-      <div className="fixed  group z-50  ">
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (userCardRef.current && !userCardRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <nav
+      className="fixed bg-white dark:bg-gray-800 top-0 left-0 right-0 z-50 flex items-center justify-between p-1 h-16 shadow-md
+      sm:h-18 sm:p-2
+      md:h-18 md:p-4
+      "
+    >
+      <div className="flex items-center">
         <button
           onClick={onToggleSidebar}
-          className="  rounded-2xl  p-1 text-black  hover:scale-105 transition duration-300"
+          className="text-gray-700 mr-2 sm:mr-4"
         >
-          <FontAwesomeIcon icon={faBars}  />
+          <FontAwesomeIcon
+            icon={faTruckFast}
+            className="text-indigo-600 text-2xl sm:text-3xl md:text-4xl m-1 sm:m-2"
+          />
         </button>
-
-        {/* Tooltip */}
-        <div className="absolute top-12 left-1/2 -translate-x-1/2 mt-1 w-max opacity-0 group-hover:opacity-100 transition duration-300">
-          <div className="relative bg-gray-600 text-white text-sm px-3 py-3  rounded-md">
-            Menu
-            {/* Arrow */}
-            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-600 rotate-45"></div>
-          </div>
-        </div>
+        <span className="text-black text1 dark:text-white text-lg sm:text-xl md:text-2xl font-semibold">
+          OVERSEAS LOGISTICS
+        </span>
       </div>
+
+      <div className="flex items-center">
+        <ThemeBtn />
+       <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="text-2xl  text-gray-700 hover:text-blue-500 dark:text-gray-300 ml-2"
+        >
+          <FontAwesomeIcon icon={faUser} />
+        </button>
+        {isOpen && <UserCard />}
       </div>
     </nav>
-   
   );
 };
 

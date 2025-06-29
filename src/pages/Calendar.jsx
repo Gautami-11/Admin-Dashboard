@@ -96,16 +96,20 @@ const Calendar = () => {
   };
 
   return (
-    <div className="p-2 md:p-4 max-w-6xl mx-auto">
+    <div className="p-2 md:p-4 max-w-6xl mx-auto bg-white dark:bg-gray-900 min-h-screen transition-colors duration-300">
+      
       {/* Header Section */}
+      <h1 className="text-4xl font-bold text-center mb-8">
+        <span className="text-black text1 dark:text-white">
+         Calendar
+        </span>
+      </h1>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-2">
-        <h1 className="text-xl md:text-2xl font-bold">Calendar</h1>
-        
         <div className="flex flex-col md:flex-row w-full md:w-auto gap-2">
           <div className="flex gap-2">
             <button 
               onClick={prevMonth}
-              className="px-3 py-1 md:px-4 md:py-2 bg-gray-100 rounded-lg hover:bg-gray-200 text-sm md:text-base"
+              className="px-3 py-1 md:px-4 md:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-500 text-sm md:text-base text-gray-700 dark:text-gray-200"
             >
               ←
             </button>
@@ -117,15 +121,15 @@ const Calendar = () => {
             </button>
             <button 
               onClick={nextMonth}
-              className="px-3 py-1 md:px-4 md:py-2 bg-gray-100 rounded-lg hover:bg-gray-200 text-sm md:text-base"
+              className="px-3 py-1 md:px-4 md:py-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-500 text-sm md:text-base"
             >
               →
             </button>
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-2 text-black dark:text-white">
             <input
-              type="text"
+              type="text1"
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
               placeholder="Filter..."
@@ -175,8 +179,8 @@ const Calendar = () => {
             <div
               key={i}
               className={`min-h-12 md:min-h-24 p-1 md:p-2 border rounded-lg ${
-                isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-400'
-              } ${isToday ? 'border-blue-500 border-2' : 'border-gray-200'}`}
+                isCurrentMonth ? 'bg-gray-100 dark:bg-gray-100' : 'bg-gray-200 text-gray-400 dark:text-gray-500'
+              } ${isToday ? 'border-blue-500 border-2' : 'border-gray-200 text-black'}`}
             >
               <div className="flex justify-between items-start">
                 <span className={`${isToday ? 'font-bold text-blue-500' : ''}`}>
@@ -269,7 +273,7 @@ const Calendar = () => {
       {/* Add Event Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 md:p-4 z-50">
-          <div className="bg-white rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg w-full max-w-md max-h-[90vh]  overflow-y-auto">
             <div className="p-4 md:p-6">
               <h3 className="text-lg md:text-xl font-semibold mb-3 md:mb-4">Add New Event</h3>
               <div className="space-y-3 md:space-y-4">
